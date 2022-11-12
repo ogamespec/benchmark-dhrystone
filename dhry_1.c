@@ -61,7 +61,7 @@ extern long     time();
                 /* Measurements should last at least 2 seconds */
 #endif
 #ifdef MSC_CLOCK
-extern clock_t	clock();
+//extern clock_t	clock();
 #define Too_Small_Time (2*HZ)
 #endif
 
@@ -229,7 +229,7 @@ main ()
   printf ("Arr_2_Glob[8][7]:    %d\n", Arr_2_Glob[8][7]);
   printf ("        should be:   Number_Of_Runs + 10\n");
   printf ("Ptr_Glob->\n");
-  printf ("  Ptr_Comp:          %d\n", (int) Ptr_Glob->Ptr_Comp);
+  printf ("  Ptr_Comp:          %x\n", Ptr_Glob->Ptr_Comp);
   printf ("        should be:   (implementation-dependent)\n");
   printf ("  Discr:             %d\n", Ptr_Glob->Discr);
   printf ("        should be:   %d\n", 0);
@@ -240,7 +240,7 @@ main ()
   printf ("  Str_Comp:          %s\n", Ptr_Glob->variant.var_1.Str_Comp);
   printf ("        should be:   DHRYSTONE PROGRAM, SOME STRING\n");
   printf ("Next_Ptr_Glob->\n");
-  printf ("  Ptr_Comp:          %d\n", (int) Next_Ptr_Glob->Ptr_Comp);
+  printf ("  Ptr_Comp:          %x\n", Next_Ptr_Glob->Ptr_Comp);
   printf ("        should be:   (implementation-dependent), same as above\n");
   printf ("  Discr:             %d\n", Next_Ptr_Glob->Discr);
   printf ("        should be:   %d\n", 0);
@@ -282,13 +282,14 @@ main ()
 #else
     Microseconds = (float) User_Time * Mic_secs_Per_Second 
                         / ((float) HZ * ((float) Number_Of_Runs));
-    Dhrystones_Per_Second = ((float) HZ * (float) Number_Of_Runs)
-                        / (float) User_Time;
+    Dhrystones_Per_Second = (((float) HZ * (float) Number_Of_Runs)
+                        / (float) User_Time) / 1757;        // to VAX
 #endif
-    printf ("Microseconds for one run through Dhrystone: ");
+    //printf ("Microseconds for one run through Dhrystone: ");          // Can be 0, useless
     //printf ("%6.1f \n", Microseconds);
-    printf ("%d \n", (int)Microseconds);
-    printf ("Dhrystones per Second:                      ");
+    //printf ("%d \n", (int)Microseconds);
+
+    printf ("Dhrystones per Second (VAX):                      ");
     //printf ("%6.1f \n", Dhrystones_Per_Second);
     printf ("%d \n", (int)Dhrystones_Per_Second);
     printf ("\n");
